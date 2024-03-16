@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +13,7 @@ using csharp_project.Utilities;
 
 namespace csharp_project.ViewModels
 {
-    public class DateInfoViewModel : INotifyPropertyChanged
+    public partial class DateInfoViewModel : INotifyPropertyChanged
     {
         public ICommand? ProcessDateButtonCommand { get; set; }
         public ICommand? ProcessClearButtonCommand { get; set; }
@@ -103,6 +104,11 @@ namespace csharp_project.ViewModels
                     MessageBox.Show("Invalid age");
                     return;
                 }
+                if (!EmainRegex().IsMatch(_person.EmailAddress))
+                {
+                    MessageBox.Show("Invalid email");
+                    return;
+                }
 
                 if (_person.IsBirthday)
                 {
@@ -135,5 +141,8 @@ namespace csharp_project.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        [GeneratedRegex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")]
+        private static partial Regex EmainRegex();
     }
 }
