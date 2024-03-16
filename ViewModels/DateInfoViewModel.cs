@@ -110,11 +110,6 @@ namespace csharp_project.ViewModels
                     return;
                 }
 
-                if (_person.IsBirthday)
-                {
-                    MessageBox.Show("Happy Birthday!");
-                }
-
                 PersonInfo = $"Name: {_person.FirstName} {_person.LastName}\n" +
                              $"Email: {_person.EmailAddress}\n" +
                              $"Age: {_person.Age}\n" +
@@ -122,6 +117,11 @@ namespace csharp_project.ViewModels
                              $"Is Adult: {(_person.IsAdult ? "Yes" : "No")}\n" +
                              $"Western Zodiac: {_person.WesternZodiac}\n" +
                              $"Chinese Zodiac: {_person.ChineseZodiac}";
+
+                if (_person.IsBirthday)
+                {
+                    MessageBox.Show("Happy Birthday!");
+                }
             });
         }
 
