@@ -18,7 +18,7 @@ namespace csharp_project.ViewModels
         public ICommand? ProcessClearButtonCommand { get; set; }
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private DateInfo _dateInfo = new DateInfo();
+        private Person? _person;
 
         public DateInfoViewModel()
         {
@@ -26,43 +26,57 @@ namespace csharp_project.ViewModels
             ProcessClearButtonCommand = new RelayCommand((object parameter) => true, (object parameter) => ClearDate());
         }
 
+        private string _firstName = "";
+        private string _lastName = "";
+        private string _emailAddress = "";
+        private DateTime _birthDate = DateTime.Now;
+
+        public string FirstName
+        {
+            get => _firstName; 
+            set 
+            { 
+                _firstName = value;
+                OnPropertyChanged("FirstName");
+            } 
+        }
+        public string LastName 
+        { 
+            get => _lastName; 
+            set 
+            { 
+                _lastName = value; 
+                OnPropertyChanged("LastName"); 
+            } 
+        }
+        public string EmailAddress 
+        { 
+            get => _emailAddress; 
+            set 
+            { 
+                _emailAddress = value; 
+                OnPropertyChanged("EmailAddress"); 
+            } 
+        }
+
         public DateTime BirthDate
         {
-            get => _dateInfo.BirthDate;
+            get => _birthDate;
             set
             {
-                _dateInfo.BirthDate = value;
+                _birthDate = value;
                 OnPropertyChanged("BirthDate");
             }
         }
 
-        public string? Age
+        private string? _personInfo;
+        public string? PersonInfo
         {
-            get => _dateInfo.Age;
+            get => _personInfo;
             set
             {
-                _dateInfo.Age = value;
-                OnPropertyChanged("Age");
-            }
-        }
-
-        public string? WesternZodiacSign
-        {
-            get => _dateInfo.WesternZodiacSign;
-            set
-            {
-                _dateInfo.WesternZodiacSign = value;
-                OnPropertyChanged("WesternZodiacSign");
-            }
-        }
-
-        public string? ChineseZodiacSign
-        {
-            get => _dateInfo.ChineseZodiacSign;
-            set
-            {
-                _dateInfo.ChineseZodiacSign = value;
-                OnPropertyChanged("ChineseZodiacSign");
+                _personInfo = value;
+                OnPropertyChanged("PersonInfo");
             }
         }
         
@@ -74,31 +88,47 @@ namespace csharp_project.ViewModels
             }
         }
 
-        public void SubmitDate()
+        public async void SubmitDate()
         {
-            var age = DateUtilites.CalculateAge(BirthDate);
-            if (age < 0 || age > 135)
+            await Task.Run(() =>
             {
-                MessageBox.Show("Invalid age");
-                return;
-            }
-            Age = age.ToString();
+                if (FirstName == "" || LastName == "" || EmailAddress == "")
+                {
+                    MessageBox.Show("Please fill in all fields");
+                    return;
+                }
+                _person = new Person(FirstName, LastName, EmailAddress, BirthDate);
+                if (_person.Age < 0 || _person.Age > 135)
+                {
+                    MessageBox.Show("Invalid age");
+                    return;
+                }
 
-            WesternZodiacSign = DateUtilites.GetWesternZodiac(BirthDate);
-            ChineseZodiacSign = DateUtilites.GetChineseZodiac(BirthDate);
+                if (_person.IsBirthday)
+                {
+                    MessageBox.Show("Happy Birthday!");
+                }
 
-            if (DateUtilites.IsBirthday(BirthDate))
-            {
-                MessageBox.Show("Happy Birthday!");
-            }
+                PersonInfo = $"Name: {_person.FirstName} {_person.LastName}\n" +
+                             $"Email: {_person.EmailAddress}\n" +
+                             $"Age: {_person.Age}\n" +
+                             $"Date of Birth: {_person.DateOfBirth:dd-MM-yyyy}\n" +
+                             $"Is Adult: {(_person.IsAdult ? "Yes" : "No")}\n" +
+                             $"Western Zodiac: {_person.WesternZodiac}\n" +
+                             $"Chinese Zodiac: {_person.ChineseZodiac}";
+            });
         }
 
-        public void ClearDate()
+        public async void ClearDate()
         {
-            BirthDate = DateTime.Now;
-            Age = null;
-            WesternZodiacSign = null;
-            ChineseZodiacSign = null;
+            await Task.Run(() =>
+            {
+                FirstName = "";
+                LastName = "";
+                EmailAddress = "";
+                PersonInfo = "";
+                BirthDate = DateTime.Now;
+            });
         }
 
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")

@@ -18,18 +18,21 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock HorizontalAlignment="Right" Margin="10,10,5,0" TextWrapping="Wrap" Text="Choose your Date of Birth:" VerticalAlignment="Top" FontSize="20"/>
-        <DatePicker Grid.Column="0" x:Name="datePicker" HorizontalAlignment="Left" Margin="10,50,10,0" VerticalAlignment="Top" Width="200" SelectedDate="{Binding Path=BirthDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Button Grid.Column="1" x:Name="btnSubmit" Content="Submit" HorizontalAlignment="Left" Margin="0,50,10,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=ProcessDateButtonCommand}"/>
-        <Button Grid.Column="1" x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="100,50,10,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=ProcessClearButtonCommand}"/>
+        <TextBlock Grid.Column="0" x:Name="firstNameText" HorizontalAlignment="Left" Margin="10, 50, 10, 0" TextWrapping="Wrap" Text="First name:" VerticalAlignment="Top" FontSize="15"/>
+        <TextBox Grid.Column="0" x:Name="firstName" HorizontalAlignment="Left" Margin="10, 70, 10, 10" VerticalAlignment="Top" Width="200" Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="50,80,5,0" TextWrapping="Wrap" Text="Age:" VerticalAlignment="Top" FontSize="20" Visibility="{Binding Age, Converter={StaticResource InitializedToVisibilityConverter}}"/>
-        <TextBlock Grid.Column="1" x:Name="age" HorizontalAlignment="Left" Margin="0,80,10,0" TextWrapping="Wrap" Text="{Binding StringFormat={}{0}, Path=Age, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock Grid.Column="0" x:Name="lastNameText" HorizontalAlignment="Left" Margin="10, 100, 10, 0" TextWrapping="Wrap" Text="Last name:" VerticalAlignment="Top" FontSize="15"/>
+        <TextBox Grid.Column="0" x:Name="lastName" HorizontalAlignment="Left" Margin="10, 120, 10, 10" VerticalAlignment="Top" Width="200" Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="50,110,5,0" TextWrapping="Wrap" Text="Western Zodiac:" VerticalAlignment="Top" FontSize="20" Visibility="{Binding WesternZodiacSign, Converter={StaticResource InitializedToVisibilityConverter}}"/>
-        <TextBlock Grid.Column="1" x:Name="westernZodiac" HorizontalAlignment="Left" Margin="0,110,10,0" TextWrapping="Wrap" Text="{Binding StringFormat={}{0}, Path=WesternZodiacSign, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock Grid.Column="0" x:Name="emailAddressText" HorizontalAlignment="Left" Margin="10, 150, 10, 0" TextWrapping="Wrap" Text="Email address:" VerticalAlignment="Top" FontSize="15"/>
+        <TextBox Grid.Column="0" x:Name="emailAddress" HorizontalAlignment="Left" Margin="10, 170, 10, 10" VerticalAlignment="Top" Width="200" Text="{Binding Path=EmailAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <DatePicker Grid.Column="1" x:Name="datePicker" HorizontalAlignment="Left" Margin="0,70,10,0" VerticalAlignment="Top" Width="200" SelectedDate="{Binding Path=BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="50,140,5,0" TextWrapping="Wrap" Text="Chinese Zodiac:" VerticalAlignment="Top" FontSize="20" Visibility="{Binding ChineseZodiacSign, Converter={StaticResource InitializedToVisibilityConverter}}"/>
-        <TextBlock Grid.Column="1" x:Name="chineseZodiac" HorizontalAlignment="Left" Margin="0,140,10,0" TextWrapping="Wrap" Text="{Binding StringFormat={}{0}, Path=ChineseZodiacSign, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" FontSize="20"/>
+        <Button Grid.Column="1" x:Name="btnSubmit" Content="Submit" HorizontalAlignment="Left" Margin="0,120,10,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=ProcessDateButtonCommand}"/>
+        <Button Grid.Column="1" x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="100,120,10,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=ProcessClearButtonCommand}"/>
+
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="2" x:Name="personInfo" HorizontalAlignment="Left" Margin="10,200,10,0" TextWrapping="Wrap" Text="{Binding StringFormat={}{0}, Path=PersonInfo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" FontSize="20"/>
     </Grid>
 </UserControl>
