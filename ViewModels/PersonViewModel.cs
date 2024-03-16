@@ -13,7 +13,7 @@ using csharp_project.Utilities;
 
 namespace csharp_project.ViewModels
 {
-    public partial class DateInfoViewModel : INotifyPropertyChanged
+    public partial class PersonViewModel : INotifyPropertyChanged
     {
         public ICommand? ProcessDateButtonCommand { get; set; }
         public ICommand? ProcessClearButtonCommand { get; set; }
@@ -21,10 +21,10 @@ namespace csharp_project.ViewModels
 
         private Person? _person;
 
-        public DateInfoViewModel()
+        public PersonViewModel()
         {
-            ProcessDateButtonCommand = new RelayCommand((object parameter) => true, (object parameter) => SubmitDate());
-            ProcessClearButtonCommand = new RelayCommand((object parameter) => true, (object parameter) => ClearDate());
+            ProcessDateButtonCommand = new RelayCommand((object parameter) => true, (object parameter) => Submit());
+            ProcessClearButtonCommand = new RelayCommand((object parameter) => true, (object parameter) => Clear());
         }
 
         private string _firstName = "";
@@ -85,11 +85,11 @@ namespace csharp_project.ViewModels
         {
             get
             {
-                return new RelayCommand((object parameter) => true, (object parameter) => SubmitDate());
+                return new RelayCommand((object parameter) => true, (object parameter) => Submit());
             }
         }
 
-        public async void SubmitDate()
+        public async void Submit()
         {
             await Task.Run(() =>
             {
@@ -125,7 +125,7 @@ namespace csharp_project.ViewModels
             });
         }
 
-        public async void ClearDate()
+        public async void Clear()
         {
             await Task.Run(() =>
             {

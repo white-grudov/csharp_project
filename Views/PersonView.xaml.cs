@@ -16,10 +16,10 @@ using System.Windows.Shapes;
 
 namespace csharp_project.Views
 {
-    public partial class DateInfoView : UserControl
+    public partial class PersonView : UserControl
     {
-        private DateInfoViewModel _viewModel = new DateInfoViewModel();
-        public DateInfoView()
+        private PersonViewModel _viewModel = new PersonViewModel();
+        public PersonView()
         {
             InitializeComponent();
             DataContext = _viewModel;
