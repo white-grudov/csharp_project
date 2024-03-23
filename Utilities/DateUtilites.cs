@@ -38,11 +38,11 @@ namespace csharp_project.Utilities
             int month = dateOfBirth.Month;
             int day = dateOfBirth.Day;
 
-            int[] endDates = { 20, 19, 20, 20, 20, 21, 22, 22, 22, 22, 21, 21 };
+            int[] endDates = { 20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22 };
             string[] zodiacSigns = { "Capricorn", "Aquarius", "Pisces", "Aries", "Taurus", "Gemini",
-                             "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius" };
+                                     "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius" };
 
-            if (day <= endDates[month - 1])
+            if (day < endDates[month - 1])
                 return zodiacSigns[month - 1];
             else
                 return zodiacSigns[month % 12];
