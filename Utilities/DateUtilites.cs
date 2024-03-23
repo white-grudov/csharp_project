@@ -1,8 +1,12 @@
-﻿using System;
+﻿using csharp_project.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+
+using csharp_project.Exceptions;
 
 namespace csharp_project.Utilities
 {
@@ -11,12 +15,22 @@ namespace csharp_project.Utilities
         public static uint CalculateAge(DateTime date)
         {
             DateTime now = DateTime.Now;
-            uint age = (uint)(now.Year - date.Year);
+            int age = now.Year - date.Year;
             if (now.Month < date.Month || (now.Month == date.Month && now.Day < date.Day))
             {
                 age--;
             }
-            return age;
+
+            if (age < 0)
+            {
+                throw new IncorrectDateException("You were not born yet!");
+            }
+            else if (age > 135)
+            {
+                throw new IncorrectDateException("You are most probably dead by now!");
+            }
+
+            return (uint)age;
         }
 
         public static string GetWesternZodiac(DateTime dateOfBirth)
@@ -28,7 +42,7 @@ namespace csharp_project.Utilities
             string[] zodiacSigns = { "Capricorn", "Aquarius", "Pisces", "Aries", "Taurus", "Gemini",
                              "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius" };
 
-            if (day < endDates[month - 1])
+            if (day <= endDates[month - 1])
                 return zodiacSigns[month - 1];
             else
                 return zodiacSigns[month % 12];

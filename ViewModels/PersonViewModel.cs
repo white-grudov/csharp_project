@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using csharp_project.Exceptions;
 using csharp_project.Models;
 using csharp_project.Utilities;
 
 namespace csharp_project.ViewModels
 {
-    public partial class PersonViewModel : INotifyPropertyChanged
+    public class PersonViewModel : INotifyPropertyChanged
     {
         public ICommand? ProcessDateButtonCommand { get; set; }
         public ICommand? ProcessClearButtonCommand { get; set; }
@@ -38,7 +33,7 @@ namespace csharp_project.ViewModels
             set 
             { 
                 _firstName = value;
-                OnPropertyChanged("FirstName");
+                OnPropertyChanged(nameof(FirstName));
             } 
         }
         public string LastName 
@@ -47,7 +42,7 @@ namespace csharp_project.ViewModels
             set 
             { 
                 _lastName = value; 
-                OnPropertyChanged("LastName"); 
+                OnPropertyChanged(nameof(LastName)); 
             } 
         }
         public string EmailAddress 
@@ -56,7 +51,7 @@ namespace csharp_project.ViewModels
             set 
             { 
                 _emailAddress = value; 
-                OnPropertyChanged("EmailAddress"); 
+                OnPropertyChanged(nameof(EmailAddress)); 
             } 
         }
 
@@ -66,7 +61,7 @@ namespace csharp_project.ViewModels
             set
             {
                 _birthDate = value;
-                OnPropertyChanged("BirthDate");
+                OnPropertyChanged(nameof(BirthDate));
             }
         }
 
@@ -77,7 +72,7 @@ namespace csharp_project.ViewModels
             set
             {
                 _personInfo = value;
-                OnPropertyChanged("PersonInfo");
+                OnPropertyChanged(nameof(PersonInfo));
             }
         }
         
@@ -98,29 +93,35 @@ namespace csharp_project.ViewModels
                     MessageBox.Show("Please fill in all fields");
                     return;
                 }
-                _person = new Person(FirstName, LastName, EmailAddress, BirthDate);
-                if (_person.Age < 0 || _person.Age > 135)
-                {
-                    MessageBox.Show("Invalid age");
-                    return;
-                }
-                if (!EmainRegex().IsMatch(_person.EmailAddress))
-                {
-                    MessageBox.Show("Invalid email");
-                    return;
-                }
 
-                PersonInfo = $"Name: {_person.FirstName} {_person.LastName}\n" +
-                             $"Email: {_person.EmailAddress}\n" +
-                             $"Age: {_person.Age}\n" +
-                             $"Date of Birth: {_person.DateOfBirth:dd-MM-yyyy}\n" +
-                             $"Is Adult: {(_person.IsAdult ? "Yes" : "No")}\n" +
-                             $"Western Zodiac: {_person.WesternZodiac}\n" +
-                             $"Chinese Zodiac: {_person.ChineseZodiac}";
-
-                if (_person.IsBirthday)
+                try
                 {
-                    MessageBox.Show("Happy Birthday!");
+                    _person = new Person(FirstName, LastName, EmailAddress, BirthDate);
+
+                    PersonInfo = $"Name: {_person.FirstName} {_person.LastName}\n" +
+                                 $"Email: {_person.EmailAddress}\n" +
+                                 $"Age: {_person.Age}\n" +
+                                 $"Date of Birth: {_person.DateOfBirth:dd-MM-yyyy}\n" +
+                                 $"Is Adult: {(_person.IsAdult ? "Yes" : "No")}\n" +
+                                 $"Western Zodiac: {_person.WesternZodiac}\n" +
+                                 $"Chinese Zodiac: {_person.ChineseZodiac}";
+
+                    if (_person.IsBirthday)
+                    {
+                        MessageBox.Show("Happy Birthday!");
+                    }
+                }
+                catch (IncorrectDateException ex)
+                {
+                    MessageBox.Show(ex.Message, "Incorrect Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (InvalidEmailAddressException ex)
+                {
+                    MessageBox.Show(ex.Message, "Invalid Email Address", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (ShortNameException ex)
+                {
+                    MessageBox.Show(ex.Message, "Name is too short", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             });
         }
@@ -141,8 +142,5 @@ namespace csharp_project.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        [GeneratedRegex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")]
-        private static partial Regex EmainRegex();
     }
 }
